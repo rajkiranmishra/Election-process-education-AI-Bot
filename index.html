@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ElectIQ – Your Interactive Election Guide</title>
+  <meta name="description"
+    content="ElectIQ helps you understand the election process, timelines, key steps, and your role as a voter through an interactive, easy-to-follow experience." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ── NAV ────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="brand-icon">🗳️</span>
+        <span class="brand-name">Elect<span class="accent">IQ</span></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#overview" class="nav-link">Overview</a></li>
+        <li><a href="#timeline" class="nav-link">Timeline</a></li>
+        <li><a href="#steps" class="nav-link">Steps</a></li>
+        <li><a href="#quiz" class="nav-link">Quiz</a></li>
+        <li><a href="#ml" class="nav-link">ML &amp; AI</a></li>
+        <li><a href="#global" class="nav-link">Global</a></li>
+        <li><a href="#aihub" class="nav-link">AI Hub</a></li>
+        <li><a href="#assistant" class="nav-link">Ask ElectIQ</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth">
+        <button class="btn-signin" id="openAuthBtn" onclick="openAuthModal('signin')">Sign In</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── AUTH MODAL ──────────────────────────────────────── -->
+  <div class="modal-overlay hidden" id="authModal" onclick="closeModalOutside(event)">
+    <div class="modal-card" id="modalCard">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+      <div class="modal-brand">🗳️ Elect<span class="accent">IQ</span></div>
+
+      <!-- Tabs -->
+      <div class="modal-tabs">
+        <button class="mtab active" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
+        <button class="mtab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form class="auth-form" id="signinForm" onsubmit="handleSignin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="siEmail" class="form-input" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="siPassword" class="form-input" placeholder="Enter password" required />
+        </div>
+        <div class="auth-error hidden" id="siError"></div>
+        <button type="submit" class="btn btn-primary auth-submit">Sign In →</button>
+        <p class="auth-switch">No account? <span onclick="switchTab('signup')">Sign up free</span></p>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form class="auth-form hidden" id="signupForm" onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="suName" class="form-input" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="suEmail" class="form-input" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="suPassword" class="form-input" placeholder="Min 6 characters" required
+            minlength="6" />
+        </div>
+        <div class="auth-error hidden" id="suError"></div>
+        <button type="submit" class="btn btn-primary auth-submit">Create Account →</button>
+        <p class="auth-switch">Already have an account? <span onclick="switchTab('signin')">Sign in</span></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-particles" id="particles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🇺🇸 Civic Education Platform</div>
+      <h1 class="hero-title">Understand<br /><span class="gradient-text">Democracy</span><br />Step by Step</h1>
+      <p class="hero-sub">Your interactive guide to elections — from voter registration to the certification of results.
+        Clear, visual, and built for every citizen.</p>
+      <div class="hero-actions">
+        <a href="#overview" class="btn btn-primary">Explore the Guide <span>→</span></a>
+        <a href="#quiz" class="btn btn-ghost">Test Your Knowledge</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill"><span class="stat-num">8</span> Key Steps</div>
+        <div class="stat-pill"><span class="stat-num">12</span> Month Timeline</div>
+        <div class="stat-pill"><span class="stat-num">10</span> Quiz Questions</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="ballot-card floating">
+        <div class="ballot-top">Official Ballot</div>
+        <div class="ballot-row"><span class="ballot-circle checked"></span> Candidate A</div>
+        <div class="ballot-row"><span class="ballot-circle"></span> Candidate B</div>
+        <div class="ballot-row"><span class="ballot-circle"></span> Candidate C</div>
+        <div class="ballot-submit">SUBMIT ✓</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── OVERVIEW CARDS ─────────────────────────────────── -->
+  <section class="section" id="overview">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">What You'll Learn</div>
+        <h2 class="section-title">The Election Ecosystem</h2>
+        <p class="section-sub">Elections are complex multi-phase events involving citizens, candidates, and government
+          bodies. Here's a bird's-eye view.</p>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-card" data-delay="0">
+          <div class="oc-icon">📋</div>
+          <h3>Voter Registration</h3>
+          <p>The foundation of democracy. Citizens must register before they can vote, verifying their eligibility and
+            address.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+        <div class="overview-card" data-delay="100">
+          <div class="oc-icon">🏛️</div>
+          <h3>Candidate Filing</h3>
+          <p>Aspiring candidates officially declare their intent by filing paperwork and sometimes paying a filing fee
+            within set deadlines.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+        <div class="overview-card" data-delay="200">
+          <div class="oc-icon">📣</div>
+          <h3>Campaigns & Primaries</h3>
+          <p>Candidates campaign, debate, and compete in primaries or caucuses to earn their party's nomination.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+        <div class="overview-card" data-delay="300">
+          <div class="oc-icon">🗳️</div>
+          <h3>Election Day</h3>
+          <p>Citizens cast their votes in person or by mail. Polling locations open early and close at a set time in
+            each jurisdiction.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+        <div class="overview-card" data-delay="400">
+          <div class="oc-icon">📊</div>
+          <h3>Counting & Canvassing</h3>
+          <p>Votes are counted, verified, and audited. Canvassing boards certify the official results for each race.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+        <div class="overview-card" data-delay="500">
+          <div class="oc-icon">🎖️</div>
+          <h3>Certification & Swearing In</h3>
+          <p>Winners are officially certified and take office. A peaceful transfer of power is a cornerstone of
+            democracy.</p>
+          <a href="#steps" class="oc-link">Learn more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTERACTIVE TIMELINE ──────────────────────────── -->
+  <section class="section section-dark" id="timeline">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Month by Month</div>
+        <h2 class="section-title">Election Timeline</h2>
+        <p class="section-sub">A typical U.S. federal election cycle spans 12+ months. Click any month to explore what
+          happens during that period.</p>
+      </div>
+      <div class="timeline-wrapper">
+        <div class="timeline-track">
+          <div class="timeline-progress" id="timelineProgress"></div>
+          <div class="timeline-months" id="timelineMonths"></div>
+        </div>
+        <div class="timeline-detail" id="timelineDetail">
+          <div class="td-placeholder">
+            <span class="td-icon">👆</span>
+            <p>Select a month above to see what happens during that stage of the election.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STEP-BY-STEP ACCORDION ─────────────────────────── -->
+  <section class="section" id="steps">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Deep Dive</div>
+        <h2 class="section-title">Step-by-Step Process</h2>
+        <p class="section-sub">Expand each step to get a detailed breakdown of what happens, who's involved, and why it
+          matters.</p>
+      </div>
+      <div class="steps-container" id="stepsContainer"></div>
+    </div>
+  </section>
+
+  <!-- ── QUIZ ───────────────────────────────────────────── -->
+  <section class="section section-dark" id="quiz">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Test Yourself</div>
+        <h2 class="section-title">Civic Knowledge Quiz</h2>
+        <p class="section-sub">Answer 10 questions to check your understanding of the election process. Instant feedback
+          on every answer!</p>
+      </div>
+      <div class="quiz-wrapper" id="quizWrapper">
+        <div class="quiz-start" id="quizStart">
+          <div class="quiz-start-icon">🧠</div>
+          <h3>Ready to test your knowledge?</h3>
+          <p>10 questions · Multiple choice · Instant explanations</p>
+          <button class="btn btn-primary" id="startQuizBtn">Start Quiz</button>
+        </div>
+        <div class="quiz-card hidden" id="quizCard">
+          <div class="quiz-meta">
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quizFill"></div>
+            </div>
+            <div class="quiz-counter" id="quizCounter">Question 1 / 10</div>
+          </div>
+          <div class="quiz-score-live">Score: <span id="liveScore">0</span></div>
+          <h3 class="quiz-question" id="quizQuestion"></h3>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-explanation hidden" id="quizExplanation"></div>
+          <button class="btn btn-primary hidden" id="nextQBtn">Next Question →</button>
+        </div>
+        <div class="quiz-results hidden" id="quizResults">
+          <div class="qr-icon" id="qrIcon">🏆</div>
+          <h3 id="qrTitle">Quiz Complete!</h3>
+          <div class="qr-score"><span id="qrScore">0</span><span>/10</span></div>
+          <p id="qrMessage"></p>
+          <div class="qr-breakdown" id="qrBreakdown"></div>
+          <button class="btn btn-ghost" id="retakeBtn">Retake Quiz</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI ASSISTANT ───────────────────────────────────── -->
+  <section class="section" id="assistant">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Ask Anything</div>
+        <h2 class="section-title">Election Assistant</h2>
+        <p class="section-sub">Have a specific question? Our AI assistant can answer questions about elections, voting
+          rights, the electoral college, and more.</p>
+      </div>
+      <div class="chat-wrapper">
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-message bot-message">
+            <div class="msg-avatar">🗳️</div>
+            <div class="msg-bubble">
+              <p>Hi! I'm <strong>ElectIQ</strong>, your election guide. Ask me anything about the election process,
+                voter registration, candidates, or how votes are counted!</p>
+              <div class="quick-chips">
+                <button class="chip" onclick="sendChip(this)">How do I register to vote?</button>
+                <button class="chip" onclick="sendChip(this)">What is the Electoral College?</button>
+                <button class="chip" onclick="sendChip(this)">How are votes counted?</button>
+                <button class="chip" onclick="sendChip(this)">What happens if there's a tie?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" class="chat-input" placeholder="Ask about elections, voting, candidates…" />
+          <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ML IN ELECTIONS ─────────────────────────────────── -->
+  <section class="section section-dark" id="ml">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Technology &amp; Democracy</div>
+        <h2 class="section-title">Machine Learning in Elections</h2>
+        <p class="section-sub">AI and ML are transforming how elections are run, analysed, and protected — for better
+          and for worse.</p>
+      </div>
+      <div class="ml-grid" id="mlGrid"></div>
+      <div class="ml-detail-panel" id="mlDetail">
+        <div class="td-placeholder"><span class="td-icon">🤖</span>
+          <p>Click any card above to explore that ML application in depth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GLOBAL ELECTIONS ───────────────────────────────── -->
+  <section class="section" id="global">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Around the World</div>
+        <h2 class="section-title">Global Election Systems</h2>
+        <p class="section-sub">Elections look very different around the world. Explore how different countries structure
+          their democracy.</p>
+      </div>
+      <div class="region-tabs" id="regionTabs"></div>
+      <div class="country-grid" id="countryGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── AI HUB ───────────────────────────────────────── -->
+  <section class="section" id="aihub">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Live News + AI</div>
+        <h2 class="section-title">AI Election Hub</h2>
+        <p class="section-sub">Real-time election news, AI-powered sentiment prediction, and a smart assistant — powered
+          by Google News.</p>
+      </div>
+      <div class="hub-tabs">
+        <button class="hub-tab hub-active" onclick="switchHub('search',this)">📰 News Search</button>
+        <button class="hub-tab" onclick="switchHub('predict',this)">🔮 Outcome Predictor</button>
+        <button class="hub-tab" onclick="switchHub('chat',this)">🤖 Smart Chat</button>
+      </div>
+
+      <!-- Search -->
+      <div class="hub-panel" id="hub-search">
+        <div class="hub-search-row">
+          <input id="newsQuery" class="hub-input"
+            placeholder="Search: US election 2026, India voting, electoral college…"
+            onkeydown="if(event.key==='Enter')searchNews()" />
+          <button class="hub-btn" onclick="searchNews()">🔍 Search</button>
+        </div>
+        <div class="hub-chips">
+          <span class="hub-chip-label">Trending:</span>
+          <button class="chip" onclick="document.getElementById('newsQuery').value=this.textContent;searchNews()">US
+            Election 2026</button>
+          <button class="chip" onclick="document.getElementById('newsQuery').value=this.textContent;searchNews()">India
+            Voting</button>
+          <button class="chip"
+            onclick="document.getElementById('newsQuery').value=this.textContent;searchNews()">Electoral
+            College</button>
+          <button class="chip"
+            onclick="document.getElementById('newsQuery').value=this.textContent;searchNews()">Election Fraud</button>
+        </div>
+        <div id="newsResults" class="news-results">
+          <div class="hub-empty"><span>📰</span>
+            <p>Search any election topic above to see live Google News results.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predict -->
+      <div class="hub-panel hidden" id="hub-predict">
+        <div class="hub-search-row">
+          <input id="predictQuery" class="hub-input" placeholder="Enter candidate name or election topic…"
+            onkeydown="if(event.key==='Enter')predictOutcome()" />
+          <button class="hub-btn" onclick="predictOutcome()">🔮 Predict</button>
+        </div>
+        <div class="hub-chips">
+          <span class="hub-chip-label">Try:</span>
+          <button class="chip"
+            onclick="document.getElementById('predictQuery').value=this.textContent;predictOutcome()">Donald
+            Trump</button>
+          <button class="chip"
+            onclick="document.getElementById('predictQuery').value=this.textContent;predictOutcome()">Narendra
+            Modi</button>
+          <button class="chip"
+            onclick="document.getElementById('predictQuery').value=this.textContent;predictOutcome()">UK Labour</button>
+          <button class="chip"
+            onclick="document.getElementById('predictQuery').value=this.textContent;predictOutcome()">France
+            Election</button>
+        </div>
+        <div id="predictResult" class="predict-result">
+          <div class="hub-empty"><span>🔮</span>
+            <p>Enter any candidate or election topic to get an AI sentiment-based prediction from live news.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div class="hub-panel hidden" id="hub-chat">
+        <div class="hub-chat-window" id="hubChatWindow">
+          <div class="chat-message bot-message">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-bubble">
+              <p>Hi! I'm your <strong>AI Election Assistant</strong>. I fetch live news to answer questions and predict
+                outcomes. Try:</p>
+              <div class="quick-chips">
+                <button class="chip" onclick="hubChip(this)">Latest US election news</button>
+                <button class="chip" onclick="hubChip(this)">Predict UK election outcome</button>
+                <button class="chip" onclick="hubChip(this)">How does voting work in India?</button>
+                <button class="chip" onclick="hubChip(this)">Who is leading in polls?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="hubChatInput" class="chat-input" placeholder="Ask about elections, news, predictions…"
+            onkeydown="if(event.key==='Enter')sendHubMessage()" />
+          <button class="chat-send-btn" onclick="sendHubMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <p class="hub-note">⚠️ News via Google News RSS. Predictions are sentiment-based — educational only, not real
+        forecasts.</p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-icon">🗳️</span>
+        <span class="brand-name">Elect<span class="accent">IQ</span></span>
+      </div>
+      <p class="footer-tagline">Empowering informed citizens through civic education.</p>
+      <div class="footer-links">
+        <a href="#overview">Overview</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#steps">Steps</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#ml">ML &amp; AI</a>
+        <a href="#global">Global</a>
+        <a href="#aihub">AI Hub</a>
+        <a href="#assistant">Ask ElectIQ</a>
+      </div>
+      <p class="footer-legal">© 2026 ElectIQ — Educational purposes only. Not affiliated with any government body or
+        political party.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="auth.js"></script>
+  <script src="news.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
